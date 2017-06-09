@@ -1,0 +1,66 @@
+
+		Tema 1 - Structuri de Date - Planificator de Procese
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+	Autor: Daniel Berbece
+	Facultatea de Automatica si Calculatoare, Anul 1, Semestrul 2
+	Grupa: 311CC
+
+
+		1) Descriere problema:
+
+	Tema presupune in planificarea proceselor pe mai multe tipuri de 
+planificari, acestea fiind: First Came, First Served; Shortest Job First; 
+Round Robin; Planificare cu Prioritati. De asemenea, am reusit si 
+implementarea bonusului, care presupune o planificare cu prioritati dinamice.
+		
+		2) Descriere sumara a implementarii:
+
+	In implementarea temei am folosit cu precadere liste de adiacenta,
+definite cu ajutorul unei structuri in care se retin datele despre proces( nume, timp necesar, prioritate), un pointer catre un proces urmator din lista si doua
+contoare necesare pentru implementarea bonusului, prin care se stabileste
+modificare prioritatii unui proces. Aceasta structura a fost folosita pentru
+toate tipurile de planificare a proceselor in urmatorul fel:
+	Am creat 3 liste: 
+	*ready - lista vazuta ca o coada - adaugam la final orice proces nou
+adaugat la citire sau care provine din lista *waiting si procesele se adauga in
+running din fata.
+	*running - lista statica de un singur element - in care se muta
+procesele, stiind astfel din ce proces decrementam timpul de procesare
+	*waiting - lista in care se pun procesele care asteapta un semnal de 
+tip (event). Daca un proces din aceasta lista primeste semnalul, el va fi mutat
+in coada *ready.
+
+	Pentru toate tipurile de planificare se folosesc 3 functii standard
+pentru adaugarea (simpla sau multipla) de procese in coada *ready, mutarea
+unui proces in *running in *waiting sau din *waiting in coada *ready. Ele se
+difera prin actiunile desfasurate la bataia ceasului(tick):
+	-FCFS --> decrementeaza timpul procesului din running / muta un proces
+din *ready in *running
+	-SJF  --> decrementeaza timpul procesului din running / cauta procesul 
+cu timpul cel mai scurt din coada *ready si il muta in *running
+	-RR   --> decrementeaza timpul procesului din running / muta un proces
+din *ready in *running daca timpul procesului din *running s-a terminat / daca
+procesul din *running si-a atins cuanta de timp alocata, procesul este mutat in
+*ready si este adaugat urmatorul proces din coada *ready
+	-PP   --> decrementeaza timpul procesului din running / muta un proces
+cu prioritate maxima din *ready in *running daca timpul procesului din *running s-a terminat / daca procesul din *running si-a atins cuanta de timp alocata, 
+procesul este mutat in *ready si este adaugat urmatorul proces cu prioritatea 
+cea mai mare din coada *ready / daca este adaugat un proces in coada *ready cu
+prioritate mai mare decat cel din *running, atunci se face schimbarea celor doua
+	-BONUS -> acelasi lucru ca si PP, doar ca prioritatea unui proces este
+modificata in functie de doua lucruri: daca isi atinge cuanta de timp de 2 ori 
+in *running, atunci este penalizat, iar daca trece de 2 ori in waiting atunci
+este promovat.
+
+		3) Observatii
+
+	Implementarea temei a durat aproximativ 20 de ore. A fost necesar mai
+mult timp pentru a intelege cum se produc bataile de ceas si in ce ordine. Au
+fost de mare ajutor exemplele oferite pentru fiecare tip de planificare. 
+	Am impartit codul pe mai multe fisiere: main-ul, header pentru structura
+header pentru functiile de baza(add,event...), un fisier cu aceste functii si 
+cate un fisier .c pentru fiecare tip de planificare: fcfs, sjf, rr, pp, bonus.
+	Per total, a fost o tema interesanta, intriganta in intelegerea de
+planificare a proceselor. Dificultate: 7.
